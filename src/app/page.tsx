@@ -1,9 +1,11 @@
 'use client'
 import MovieCard from "@/components/MovieCard"
+import ModalCreate from '@/components/ModalCreate'
 import { useEffect, useState } from "react"
 export default function Home() {
 
   const [movies, setMovies] = useState([])
+  const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
 
@@ -50,8 +52,11 @@ export default function Home() {
         }
       </div>
       <div className="flex">
-        <button className="border px-15 py-4 bg-amber-100">adicionar</button>
+        <button onClick={() => setShowModal(!showModal)} className="border px-15 py-4 bg-amber-100">adicionar</button>
       </div>
+
+      {showModal && 
+      <ModalCreate setShowModal={setShowModal}/>}
     </div>
   )
 }
