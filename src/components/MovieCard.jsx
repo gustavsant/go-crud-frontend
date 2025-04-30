@@ -5,7 +5,7 @@ import { PiStar } from "react-icons/pi"
 import ModalUpdate from '@/components/ModalUpdate'
 
 
-export default function MovieCard({ id, title, description, rating, cover, handleDelete }) {
+export default function MovieCard({ id, title, description, rating, cover, handleDelete, fetchData, userLoggedIn }) {
 
     const [showModal, setShowModal] = useState(false)
 
@@ -14,6 +14,7 @@ export default function MovieCard({ id, title, description, rating, cover, handl
 
         const response = await fetch(`http://localhost:3220/movies/${movieId}`, {
             method: "DELETE",
+            credentials: "include"
         })
 
         const result = await response.json()
@@ -33,14 +34,18 @@ export default function MovieCard({ id, title, description, rating, cover, handl
                         <PiStar />{rating}
                     </div>
                 </div>
-                <div className="flex flex-col gap-3">
-                    <PiTrashBold onClick={() => deleteMovie(id, handleDelete)} className="cursor-pointer" size={24} />
-                    <PiPencilBold onClick={() => setShowModal(true)} className="cursor-pointer" size={24} />
-                </div>
+                {
+                    userLoggedIn &&
+                    <div className="flex flex-col gap-3">
+                        <PiTrashBold onClick={() => deleteMovie(id, handleDelete)} className="cursor-pointer" size={24} />
+                        <PiPencilBold onClick={() => setShowModal(true)} className="cursor-pointer" size={24} />
+                    </div>
+                }
+
             </div>
             {
                 showModal &&
-                <ModalUpdate setShowModal={setShowModal}/>
+                <ModalUpdate setShowModal={setShowModal} fetchData={fetchData} id={id} />
             }
         </>
 
